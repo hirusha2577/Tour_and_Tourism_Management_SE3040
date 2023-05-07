@@ -1,0 +1,103 @@
+
+  .loading-spinner {
+    display: inline-block;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--secondary-color);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 0.8s infinite linear;
+    margin-left: 5px;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem;
+    border: 2px solid #ccc;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .table-row:hover {
+    background-color: #f5f5f5;
+  }
+
+  
+  .table__div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; 
+  }
+  .edt_btn {
+    background-color: var(--secondary-color)!important;
+    margin-right: 4px;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edt_btn:hover {
+    background-color: darken(var(--secondary-color), 10%);
+  }
+  
+  .edt_btn:focus {
+    outline: none;
+
+  }
+
+
+.delete__button {
+    background-color: #ff0000!important; 
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete__button:hover {
+    background-color: #cc0000; 
+  }
+  
+  .delete__button:focus {
+    outline: none;
+  }
+  h2{
+    margin-left: 35px;
+    color: var(--primary-color);
+  }
+  .booking-date {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .custom-input {
+    display: block;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
