@@ -9,7 +9,10 @@
 }
 
 .tour__img {
-  position: relative;
+  position: sticky;
+}
+.tour__img img{
+  height: 200px;
 }
 
 .tour__img span {
