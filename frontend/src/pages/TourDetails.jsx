@@ -32,7 +32,7 @@ const TourDetails = () => {
   const { id } = useParams();
   const reviewMsgRef = useRef("");
   const [tourRating, setTourRating] = useState(null);
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext); 
   const [modal, setModal] = useState(false);
 
 

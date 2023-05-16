@@ -8,7 +8,7 @@ import {
   Table,
   Button,
 } from "reactstrap";
-import "../styles/tourist-manage-booking,css";
+import "../styles/tourist-manage-booking.css";
 import "../styles/home.css";
 
 const ManageBookingsTourist = () => {
@@ -72,7 +72,7 @@ const ManageBookingsTourist = () => {
                 value="Shehan Liyanage"
               />
               <label class="booking-date" htmlFor="start-date">
-              Guest Size
+                Guest Size
               </label>
               <input
                 class="custom-input"
@@ -81,7 +81,7 @@ const ManageBookingsTourist = () => {
                 value="8"
               />
               <label class="booking-date" htmlFor="start-date">
-              Phone
+                Phone
               </label>
               <input
                 class="custom-input"
@@ -89,7 +89,6 @@ const ManageBookingsTourist = () => {
                 id="start-date"
                 value="541254587"
               />
-              
             </ModalBody>
             <ModalFooter className="custom-modal-footer">
               <Button

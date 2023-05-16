@@ -1,11 +1,11 @@
-import React,{useState , useContext} from "react";
+import React, { useState, useContext } from "react";
 
-import {Container , Row , Col , Form  , FormGroup , Button} from 'reactstrap'
-import { Link , useNavigate } from "react-router-dom";
-import '../styles/login.css'
+import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
-import loginImg from '../assets/images/login.png'
-import userIcon from '../assets/images/user.png'
+import loginImg from "../assets/images/login.png";
+import userIcon from "../assets/images/user.png";
 
 import { AuthContext } from "./../context/AuthContext";
 import { BASE_URL } from "../utils/config";
@@ -13,56 +13,44 @@ import { BASE_URL } from "../utils/config";
 const Login = () => {
   const [credentials, setCredentials] = useState({
     email: undefined,
-    password: undefined
+    password: undefined,
   });
 
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
 
-  const {dispatch} = useContext(AuthContext)
+  const { dispatch } = useContext(AuthContext);
 
   const handleChange = (e) => {
-    setCredentials(prev => ({ ...prev, [e.target.id]: e.target.value }))
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const handleClick = async e => {
+  const handleClick = async (e) => {
     e.preventDefault();
 
-    dispatch({type:"LOGIN_START"})
+    dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await fetch(`${BASE_URL}auth/login`,{
+      const res = await fetch(`${BASE_URL}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify(credentials),
-      })
+      });
 
       const result = await res.json();
-      if(!res.ok) throw new Error(result.message);
+      console.log(result);
+      if (!res.ok) throw new Error(result.message);
 
-      dispatch({type:"LOGIN_SUCCESS", payload: result.data})
-      
-      const user = result.role;
-      if(user === "user"){
-        navigate("/")
-      }
-       else if(user === "hotel"){
-        navigate("/home-Hotel")
-      }
-       else if(user === "vehicleDriver"){
-        navigate("/driver-tour-manage")
-      }
-       else if(user === "tourGuide"){
-        navigate("/home-Giude")
-      }
-
+      dispatch({ type: "LOGIN_SUCCESS", payload: result.data });
+      console.log(result.role);
+      navigate("/");
     } catch (err) {
-      dispatch({type:"LOGIN_FAILURE", payload: err.message})
-      alert(err.message)
+      dispatch({ type: "LOGIN_FAILURE", payload: err.message });
+      alert(err.message);
     }
-  }
+  };
   return (
     <section>
       <Container>
@@ -80,21 +68,41 @@ const Login = () => {
 
                 <Form onSubmit={handleClick}>
                   <FormGroup>
-                    <input type="text" placeholder="email" required id="email" onChange={handleChange} />
+                    <input
+                      type="text"
+                      placeholder="email"
+                      required
+                      id="email"
+                      onChange={handleChange}
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <input type="password" placeholder="password" required id="password" onChange={handleChange} />
+                    <input
+                      type="password"
+                      placeholder="password"
+                      required
+                      id="password"
+                      onChange={handleChange}
+                    />
                   </FormGroup>
-                  <Button className="btn secondary__btn auth__btn" type="submit" onClick={handleClick}> Login</Button>
-                  </Form>
-                  <p>Don't have an account? <Link to='/register'>Create</Link></p>
+                  <Button
+                    className="btn secondary__btn auth__btn"
+                    type="submit"
+                    onClick={handleClick}
+                  >
+                    {" "}
+                    Login
+                  </Button>
+                </Form>
+                <p>
+                  Don't have an account? <Link to="/register">Create</Link>
+                </p>
               </div>
             </div>
           </Col>
         </Row>
       </Container>
     </section>
-
   );
 };
 export default Login;

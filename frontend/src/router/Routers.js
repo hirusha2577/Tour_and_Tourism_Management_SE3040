@@ -17,6 +17,7 @@ import ManageBookings from "../pages/Manage-Bookings";
 import GiudeTourView from "../pages/Guide-Tour-Manage";
 import DriverTourView from "../pages/Driver-Tour-Manage";
 import ManageBookingsTourist from "../pages/Manage-Tourist-Booking";
+import UserProfile from "../pages/UserProfile";
 import { ThankYou } from "../pages/ThankYou";
 
 const Routers = () => {
@@ -38,7 +39,11 @@ const Routers = () => {
       <Route path="/guide-tour-manage" element={<GiudeTourView />} />
       <Route path="/manage-bookings" element={<ManageBookings />} />
       <Route path="/driver-tour-manage" element={<DriverTourView />} />
-      <Route path="/tourist-manage-booking" element={<ManageBookingsTourist />} />
+      <Route
+        path="/tourist-manage-booking"
+        element={<ManageBookingsTourist />}
+      />
+      <Route path="/profile" element={<UserProfile />} />
     </Routes>
   );
 };
