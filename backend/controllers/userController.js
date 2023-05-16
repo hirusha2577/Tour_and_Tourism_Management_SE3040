@@ -7,13 +7,13 @@ export const createUser = async (req, res) => {
     const savedUser = await newUser.save();
     res.status(200).json({
       success: true,
-      message: "Successfully created a new tour",
+      message: "Successfully created a new User",
       data: savedUser,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Unable to create tour",
+      message: "Unable to create User",
     });
   }
 };
@@ -30,13 +30,13 @@ export const updatedUser = async (req, res) => {
     );
     res.status(200).json({
       success: true,
-      message: "Successfully updated tour",
+      message: "Successfully updated User",
       data: updateUser,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Unable to update tour",
+      message: "Unable to update User",
     });
   }
 };
@@ -48,13 +48,13 @@ export const deleteUser = async (req, res) => {
 
       res.status(200).json({
         success: true,
-        message: "Successfully Deleted user",
+        message: "Successfully Deleted User",
       });
     }
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Unable to delete user",
+      message: "Unable to delete User",
     });
   }
 };
@@ -64,19 +64,19 @@ export const getSingleUser = async (req, res) => {
     const user = await User.findById(id);
     res.status(200).json({
       success: true,
-      message: "Successfully get user",
+      message: "Successfully get User",
       data: user,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Unable to find user",
+      message: "Unable to find User",
     });
   }
 };
 export const getAllUser = async (req, res) => {
   try {
-    const users = await User.find({})
+    const users = await User.find({});
     res.status(200).json({
       success: true,
       message: "Successfully get users",
