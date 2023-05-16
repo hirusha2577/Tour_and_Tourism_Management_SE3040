@@ -43,8 +43,20 @@ const Login = () => {
       if(!res.ok) throw new Error(result.message);
 
       dispatch({type:"LOGIN_SUCCESS", payload: result.data})
-      console.log(result.role)
-      navigate("/")
+      
+      const user = result.role;
+      if(user === "user"){
+        navigate("/")
+      }
+       else if(user === "hotel"){
+        navigate("/home-Hotel")
+      }
+       else if(user === "vehicleDriver"){
+        navigate("/driver-tour-manage")
+      }
+       else if(user === "tourGuide"){
+        navigate("/home-Giude")
+      }
 
     } catch (err) {
       dispatch({type:"LOGIN_FAILURE", payload: err.message})

@@ -37,7 +37,7 @@ const tourSchema = new mongoose.Schema(
     },
     HotelName: {
       type: String,
-      required: true,
+      // required: true,
     },
 
     reviews: [
