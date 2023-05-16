@@ -20,6 +20,8 @@ export const createVehicle = async (req, res) => {
 
 export const updateVehicle = async (req, res) => {
   const id = req.params.id;
+  console.log(req.body);
+  console.log(id);
   try {
     const updateVehicle = await Vehicle.findByIdAndUpdate(
       id,

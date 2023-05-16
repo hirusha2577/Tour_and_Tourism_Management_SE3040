@@ -2,11 +2,9 @@ import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema(
   {
-    userId: {
+    tourId: {
       type: String,
-    },
-    userEmail: {
-      type: String,
+      required: true,
     },
     tourName: {
       type: String,
@@ -27,6 +25,22 @@ const bookingSchema = new mongoose.Schema(
     bookAt: {
       type: Date,
       // required: true,
+    },
+    status: {
+      type: String,
+      default: "pending",
+    },
+    guideId: {
+      type: String,
+    },
+    guideName: {
+      type: String,
+    },
+    vehicleId: {
+      type: String,
+    },
+    endDate: {
+      type: Date,
     },
   },
   { timestamps: true }
