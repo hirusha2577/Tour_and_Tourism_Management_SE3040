@@ -60,20 +60,11 @@ const HomeGiude = () => {
       {/* ========= hero section end */}
       <section>
         <div className=" Hotel__links d-flex align-items-center gap-5">
-          <Link to="/add-tour">
-          <div className="hotel__main">
-            Add Tour
-          </div>
-          </Link>
-          <Link to="/view-tours">
-          <div className="hotel__main">
-            View Tours
-          </div>
+          <Link to="/guide-tour-manage">
+            <div className="hotel__main">View Tours</div>
           </Link>
           <Link to="/manage-bookings">
-          <div className="hotel__main">
-            View Bookings
-          </div>
+            <div className="hotel__main">View Bookings</div>
           </Link>
         </div>
       </section>
