@@ -15,7 +15,7 @@ import { verifyHotel } from "../utils/verifyToken.js";
 const router = express.Router();
 
 //create new tour
-router.post("/", verifyHotel, createTour);
+router.post("/", createTour);
 
 //update tour
 router.put("/:id", updatedTour);

@@ -1,38 +1,110 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "../styles/add-tour.css";
+import Swal from "sweetalert2";
+
+import { createTour } from "../controllers/Tours";
 
 const AddTour = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    city: "",
-    address: "",
-    distance: "",
-    photo: "",
-    desc: "",
-    price: "",
-    maxGroupSize: "",
-    HotelName: "",
-    featured: false,
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const [title, setTitle] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [distance, setDistance] = useState("");
+  const [desc, setDesc] = useState("");
+  const [price, setPrice] = useState("");
+  const [maxGroupSize, setMaxGroupSize] = useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [featured, setFeatured] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    if (
+      title === "" &&
+      city === "" &&
+      address === "" &&
+      distance === "" &&
+      desc === "" &&
+      price === "" &&
+      maxGroupSize === ""
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill all the fields!",
+      });
+    } else if (title === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Tilte field!",
+      });
+    } else if (city === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill City field!",
+      });
+    } else if (address === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Address field!",
+      });
+    } else if (distance === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Distance field!",
+      });
+    } else if (desc === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Description field!",
+      });
+    } else if (price === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Place field!",
+      });
+    } else if (maxGroupSize === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Max Group Size field!",
+      });
+    } else if (hotelName === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill Hotel Name field!",
+      });
+    } else {
+      const newTour = {
+        title,
+        city,
+        address,
+        distance,
+        desc,
+        price,
+        maxGroupSize,
+        hotelName,
+        featured,
+      };
+      createTour(newTour);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Tour added successfully!",
+      });
+    }
   };
 
   return (
     <div>
       <div>
-      <h2 className="d-flex justify-content-center mb-4">Add Tours</h2>
+        <h2 className="d-flex justify-content-center mb-4">Add Tours</h2>
       </div>
       <div>
         <Form className="add-tour-form" onSubmit={handleSubmit}>
@@ -40,10 +112,9 @@ const AddTour = () => {
             <Input
               type="text"
               name="title"
-              value={formData.title}
-              onChange={handleChange}
+              value={title.value}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
-              required
             />
           </FormGroup>
 
@@ -51,10 +122,9 @@ const AddTour = () => {
             <Input
               type="text"
               name="city"
-              value={formData.city}
-              onChange={handleChange}
+              value={city.value}
+              onChange={(e) => setCity(e.target.value)}
               placeholder="City"
-              required
             />
           </FormGroup>
 
@@ -62,10 +132,9 @@ const AddTour = () => {
             <Input
               type="text"
               name="address"
-              value={formData.address}
-              onChange={handleChange}
+              value={address.value}
+              onChange={(e) => setAddress(e.target.value)}
               placeholder="Address"
-              required
             />
           </FormGroup>
 
@@ -73,14 +142,13 @@ const AddTour = () => {
             <Input
               type="number"
               name="distance"
-              value={formData.distance}
-              onChange={handleChange}
+              value={distance.value}
+              onChange={(e) => setDistance(e.target.value)}
               placeholder="Distance"
-              required
             />
           </FormGroup>
 
-          <FormGroup>
+          {/* <FormGroup>
             <Input
               type="text"
               name="photo"
@@ -89,16 +157,15 @@ const AddTour = () => {
               placeholder="Photo"
               required
             />
-          </FormGroup>
+          </FormGroup> */}
 
           <FormGroup>
             <Input
               type="textarea"
               name="desc"
-              value={formData.desc}
-              onChange={handleChange}
+              value={desc.value}
+              onChange={(e) => setDesc(e.target.value)}
               placeholder="Description"
-              required
             />
           </FormGroup>
 
@@ -106,10 +173,9 @@ const AddTour = () => {
             <Input
               type="number"
               name="price"
-              value={formData.price}
-              onChange={handleChange}
+              value={price.value}
+              onChange={(e) => setPrice(e.target.value)}
               placeholder="Price"
-              required
             />
           </FormGroup>
 
@@ -117,10 +183,9 @@ const AddTour = () => {
             <Input
               type="number"
               name="maxGroupSize"
-              value={formData.maxGroupSize}
-              onChange={handleChange}
+              value={maxGroupSize.value}
+              onChange={(e) => setMaxGroupSize(e.target.value)}
               placeholder="Max Group Size"
-              required
             />
           </FormGroup>
 
@@ -128,10 +193,9 @@ const AddTour = () => {
             <Input
               type="text"
               name="HotelName"
-              value={formData.HotelName}
-              onChange={handleChange}
+              value={hotelName.value}
+              onChange={(e) => setHotelName(e.target.value)}
               placeholder="Hotel Name"
-              required
             />
           </FormGroup>
 
@@ -140,9 +204,9 @@ const AddTour = () => {
               <Input
                 type="checkbox"
                 name="featured"
-                checked={formData.featured}
+                checked={featured.value}
                 onChange={(e) =>
-                  setFormData((prevState) => ({
+                  setFeatured((prevState) => ({
                     ...prevState,
                     featured: e.target.checked,
                   }))

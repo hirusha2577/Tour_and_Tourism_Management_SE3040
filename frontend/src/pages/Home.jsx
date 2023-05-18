@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 
 import { Container, Row, Col } from "reactstrap";
@@ -18,7 +18,6 @@ import Testimonials from "../components/Testimonial/Testimonials";
 import Newsletter from "../shared/Newsletter";
 
 const Home = () => {
- 
   return (
     <>
       {/* ========= hero section start */}
@@ -36,7 +35,7 @@ const Home = () => {
                   <span className="highlight">memories</span>
                 </h1>
                 <p>
-                Discover your next adventure with ease and convenience! Our
+                  Discover your next adventure with ease and convenience! Our
                   site offers everything you need to make your trip
                   unforgettable, from tours and hotels to rental cars and
                   activities, all at competitive prices. Our team is dedicated

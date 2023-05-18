@@ -1,20 +1,22 @@
 import Tour from "../models/Tour.js";
 
 export const createTour = async (req, res) => {
-  const newTour = new Tour(req.body);
-  try {
-    const savedTour = await newTour.save();
-    res.status(200).json({
-      success: true,
-      message: "Successfully created a new tour",
-      data: savedTour,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "Unable to create a new tour",
-    });
-  }
+  const tour = new Tour({
+    title: req.body.title,
+    city: req.body.city,
+    address: req.body.address,
+    distance: req.body.distance,
+    desc: req.body.desc,
+    price: req.body.price,
+    maxGroupSize: req.body.maxGroupSize,
+    HotelName: req.body.HotelName,
+  });
+  const details = await tour.save();
+
+  res.send({
+    status: "success",
+    details: details,
+  });
 };
 
 export const updatedTour = async (req, res) => {
