@@ -27,7 +27,6 @@ const Header = () => {
   const navigation = useNavigate();
   const { user, dispatch } = useContext(AuthContext);
 
-
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     navigation("/");
@@ -86,7 +85,9 @@ const Header = () => {
                 {user ? (
                   <>
                     <h5 className="mb-0">{user.username}</h5>
-                    <h5 className="mb-0">Profile</h5>
+                    <Link to={"/profile"}>
+                      <button className="btn btn-info">Profile</button>
+                    </Link>
                     <button className="btn btn-dark" onClick={logout}>
                       logout
                     </button>

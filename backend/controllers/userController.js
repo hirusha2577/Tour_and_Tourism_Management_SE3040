@@ -18,28 +18,63 @@ export const createUser = async (req, res) => {
   }
 };
 
+// export const updatedUser = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const updateUser = await User.findByIdAndUpdate(
+//       id,
+//       {
+//         $set: req.body,
+//       },
+//       { new: true }
+//     );
+//     res.status(200).json({
+//       success: true,
+//       message: "Successfully updated User",
+//       data: updateUser,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Unable to update User",
+//     });
+//   }
+// };
+
 export const updatedUser = async (req, res) => {
-  const id = req.params.id;
   try {
-    const updateUser = await User.findByIdAndUpdate(
-      id,
+    const user = await User.findOneAndUpdate(
       {
-        $set: req.body,
+        _id: req.body._id,
       },
-      { new: true }
+      {
+        _id: req.body.id,
+        username: req.body.username,
+        email: req.body.email,
+        hotelname: req.body.hotelname,
+        hotellocation: req.body.hotellocation,
+      },
+      {
+        new: true,
+      }
     );
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated User",
-      data: updateUser,
-    });
+    console.log(employee);
+    if (employee) {
+      res.send({
+        status: 200,
+        employee: employee,
+      });
+    } else {
+      res.send({
+        status: 500,
+        employee: employee,
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to update User",
-    });
+    console.log(error.message);
   }
 };
+
 export const deleteUser = async (req, res) => {
   const id = req.params.id;
   try {

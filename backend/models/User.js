@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    hotelname: {
+      type: String,
+    },
+    hotellocation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

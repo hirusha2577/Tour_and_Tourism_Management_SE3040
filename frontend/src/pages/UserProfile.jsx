@@ -10,6 +10,8 @@ const UserProfile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [userDetails, setUserDetails] = useState({});
 
+  console.log();
+
   useEffect(() => {
     // Fetch user details from the server
     setUserDetails(user);
@@ -53,14 +55,29 @@ const UserProfile = () => {
           disabled={!isEditMode}
         />
 
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          value={userDetails.password}
-          onChange={handleChange}
-          disabled={!isEditMode}
-        ></input>
+        {user.username === "hotel" && (
+          <>
+            <label htmlFor="hotelName">Hotel Name:</label>
+            <input
+              type="text"
+              id="hotelName"
+              name="hotelName"
+              value={userDetails.hotelname}
+              onChange={handleChange}
+              disabled={!isEditMode}
+            />
+
+            <label htmlFor="hotelLocation">Hotel Location:</label>
+            <input
+              type="text"
+              id="hotelLocation"
+              name="hotelLocation"
+              value={userDetails.hotellocation}
+              onChange={handleChange}
+              disabled={!isEditMode}
+            />
+          </>
+        )}
 
         {isEditMode ? (
           <button type="button" onClick={handleSaveClick}>
