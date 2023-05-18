@@ -18,29 +18,6 @@ export const createUser = async (req, res) => {
   }
 };
 
-// export const updatedUser = async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     const updateUser = await User.findByIdAndUpdate(
-//       id,
-//       {
-//         $set: req.body,
-//       },
-//       { new: true }
-//     );
-//     res.status(200).json({
-//       success: true,
-//       message: "Successfully updated User",
-//       data: updateUser,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Unable to update User",
-//     });
-//   }
-// };
-
 export const updatedUser = async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
@@ -58,16 +35,16 @@ export const updatedUser = async (req, res) => {
         new: true,
       }
     );
-    console.log(employee);
-    if (employee) {
+
+    if (user) {
       res.send({
         status: 200,
-        employee: employee,
+        user: user,
       });
     } else {
       res.send({
         status: 500,
-        employee: employee,
+        user: user,
       });
     }
   } catch (error) {
