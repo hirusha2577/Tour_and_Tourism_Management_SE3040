@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "../styles/add-tour.css";
+import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 import { createTour } from "../controllers/Tours";
 
 const AddTour = () => {
+  const { user } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
@@ -13,7 +15,6 @@ const AddTour = () => {
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
   const [maxGroupSize, setMaxGroupSize] = useState("");
-  const [hotelName, setHotelName] = useState("");
   const [featured, setFeatured] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -74,12 +75,6 @@ const AddTour = () => {
         title: "Oops...",
         text: "Please fill Max Group Size field!",
       });
-    } else if (hotelName === "") {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Please fill Hotel Name field!",
-      });
     } else {
       const newTour = {
         title,
@@ -89,7 +84,7 @@ const AddTour = () => {
         desc,
         price,
         maxGroupSize,
-        hotelName,
+        hotelName: user.hotelname,
         featured,
       };
       createTour(newTour);
@@ -193,9 +188,9 @@ const AddTour = () => {
             <Input
               type="text"
               name="HotelName"
-              value={hotelName.value}
-              onChange={(e) => setHotelName(e.target.value)}
+              value={user.hotelname}
               placeholder="Hotel Name"
+              disabled
             />
           </FormGroup>
 

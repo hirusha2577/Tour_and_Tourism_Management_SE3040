@@ -1,11 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Table, Button } from "reactstrap";
+import {
+  Table,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
+import { AuthContext } from "../context/AuthContext";
+
 import "../styles/view-tours.css";
 import "../styles/home.css";
 
+import { getAllTour } from "../controllers/Tours";
+
 const ViewTours = () => {
+  const { user } = useContext(AuthContext);
+
   const [tours, setTours] = useState([]);
+  const [selectedTour, setSelectedTour] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [editedTour, setEditedTour] = useState({});
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const tourData = await getAllTour();
+        setTours(tourData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchTours();
+  }, []);
 
   const handleDelete = async (tourId) => {
     // try {
@@ -18,102 +47,165 @@ const ViewTours = () => {
     // }
   };
 
+  const handleEdit = (tour) => {
+    setSelectedTour(tour);
+    setEditedTour(tour);
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedTour((prevTour) => ({
+      ...prevTour,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    // Save the updated tour data
+    // Send a request to update the tour data in the backend using axios or fetch
+    // ...
+
+    toggleModal();
+  };
+
+  const handleCancel = () => {
+    toggleModal();
+  };
+
   return (
     <div>
       <h2 className="m-5">View Tours </h2>
-    <div className="table__div">
-      <Table className="custom-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>City</th>
-            <th>Address</th>
-            <th>Distance</th>
-            <th>Price</th>
-            <th>Maxgroup Size</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Nine Arches Bridge</td>
-            <td>Ella</td>
-            <td>No 1, Getehewelapathana Passara Road, 3rd Mile Post, Ella</td>
-            <td>300 KM</td>
-            <td>1500.00</td>
-            <td>10</td>
-            <td>
-              <Button className="edt_btn">Edit</Button>
-              <Button className="delete__button">Delete</Button>
-            </td>
-          </tr>
-          <tr>
-          <td>Dutch Fort</td>
-            <td>Galle</td>
-            <td>Church St, Galle</td>
-            <td>400 KM</td>
-            <td>3700.00</td>
-            <td>8</td>
-            <td>
-              <Button className="edt_btn">Edit</Button>
-              <Button className="delete__button">Delete</Button>
-            </td>
-          </tr>
-          <tr>
-          <td>Arugam Bay Beach</td>
-            <td>Arugambay</td>
-            <td>Arugambe, Batticalo</td>
-            <td>500 KM</td>
-            <td>8500.00</td>
-            <td>8</td>
-            <td>
-              <Button className="edt_btn">Edit</Button>
-              <Button className="delete__button">Delete</Button>
-            </td>
-          </tr>
-          <tr>
-          <td>Sigiriya</td>
-            <td>Sigiriya</td>
-            <td>Sigiriya, Matale</td>
-            <td>500 KM</td>
-            <td>4800.00</td>
-            <td>7</td>
-            <td>
-              <Button className="edt_btn">Edit</Button>
-              <Button className="delete__button">Delete</Button>
-            </td>
-          </tr>
-        </tbody>
-        {/* {tours.map((tour) => (
-          <tr key={tour.id} className="table-row">
-            <td>{tour.title}</td>
-            <td>{tour.city}</td>
-            <td>
-              <Button className="edit-button">Edit</Button>
-              <Button className="delete-button" onClick={() => handleDelete(tour.id)}>
-                Delete
-              </Button>
-            </td>
-          </tr>
-        ))} */}
-      </Table>
+      <div className="table__div">
+        <Table className="custom-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>City</th>
+              <th>Address</th>
+              <th>Distance</th>
+              <th>Price</th>
+              <th>Maxgroup Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tours
+              .filter((tour) => tour.HotelName === user.hotelname)
+              .map((tour) => (
+                <tr key={tour.id}>
+                  <td>{tour.title}</td>
+                  <td>{tour.city}</td>
+                  <td>{tour.address}</td>
+                  <td>{tour.distance}</td>
+                  <td>{tour.price}</td>
+                  <td>{tour.maxGroupSize}</td>
+                  <td>
+                    <Button
+                      className="edt_btn"
+                      onClick={() => handleEdit(tour)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      className="delete__button"
+                      onClick={() => handleDelete(tour.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
       </div>
+      <Modal isOpen={modal} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Edit Tour</ModalHeader>
+        <ModalBody>
+          <div>
+            <label htmlFor="edit-title">Title:</label>
+            <input
+              type="text"
+              id="edit-title"
+              name="title"
+              value={editedTour.title || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="edit-city">City:</label>
+            <input
+              type="text"
+              id="edit-city"
+              name="city"
+              value={editedTour.city || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="edit-address">Address:</label>
+            <input
+              type="text"
+              id="edit-address"
+              name="address"
+              value={editedTour.address || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="edit-distance">Distance:</label>
+            <input
+              type="text"
+              id="edit-distance"
+              name="distance"
+              value={editedTour.distance || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="edit-price">Price:</label>
+            <input
+              type="text"
+              id="edit-price"
+              name="price"
+              value={editedTour.price || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="edit-maxGroupSize">Max Group Size:</label>
+            <input
+              type="text"
+              id="edit-maxGroupSize"
+              name="maxGroupSize"
+              value={editedTour.maxGroupSize || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleSave}>
+            Save
+          </Button>
+          <Button color="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
       <section>
-        <div className=" Hotel__links d-flex align-items-center gap-5">
+        <div className="Hotel__links d-flex align-items-center gap-5">
           <Link to="/add-tour">
-          <div className="hotel__main">
-            Add Tour
-          </div>
+            <div className="hotel__main">Add Tour</div>
           </Link>
-          <Link to="/view-tours" >
-          <div className="hotel__main">
-            View Tours
-          </div>
+          <Link to="/view-tours">
+            <div className="hotel__main">View Tours</div>
           </Link>
           <Link to="/manage-bookings">
-          <div className="hotel__main">
-            View Bookings
-          </div>
+            <div className="hotel__main">View Bookings</div>
           </Link>
         </div>
       </section>

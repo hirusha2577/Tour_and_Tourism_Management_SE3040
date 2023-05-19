@@ -9,7 +9,7 @@ export const createTour = async (req, res) => {
     desc: req.body.desc,
     price: req.body.price,
     maxGroupSize: req.body.maxGroupSize,
-    HotelName: req.body.HotelName,
+    HotelName: req.body.hotelName,
   });
   const details = await tour.save();
 
