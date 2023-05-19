@@ -19,29 +19,6 @@ export const createTour = async (req, res) => {
   });
 };
 
-// export const updatedTour = async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     const updateTour = await Tour.findByIdAndUpdate(
-//       id,
-//       {
-//         $set: req.body,
-//       },
-//       { new: true }
-//     );
-//     res.status(200).json({
-//       success: true,
-//       message: "Successfully updated tour",
-//       data: updateTour,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Unable to update tour",
-//     });
-//   }
-// };
-
 export const updatedTour = async (req, res) => {
   try {
     const tour = await Tour.findOneAndUpdate(
@@ -79,25 +56,6 @@ export const updatedTour = async (req, res) => {
     console.log(error.message);
   }
 };
-
-// export const deleteTour = async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     if (id) {
-//       await Tour.findByIdAndDelete(id);
-
-//       res.status(200).json({
-//         success: true,
-//         message: "Successfully Deleted tour",
-//       });
-//     }
-//   } catch (err) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Unable to delete tour",
-//     });
-//   }
-// };
 
 export const deleteTour = async (req, res) => {
   const tour = await Tour.findOneAndDelete({ _id: req.body.id });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Modal,
@@ -10,13 +10,31 @@ import {
 } from "reactstrap";
 import "../styles/manage-tours.css";
 import "../styles/home.css";
+import { getAllBooking } from "../controllers/Booking";
+import { AuthContext } from "../context/AuthContext";
+import { reactBaseURL } from "../utils/config";
 
 const ManageBookings = () => {
-  const [tours, setTours] = useState([]);
+  const { user } = useContext(AuthContext);
+  const [bookings, setBookings] = useState([]);
   const [modal, setModal] = useState(false);
   // const [selectedTour, setSelectedTour] = useState(null);
   // const [selectedGuide, setSelectedGuide] = useState(null);
   // const [selectedDriver, setSelectedDriver] = useState(null);
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const bookingData = await getAllBooking();
+      setBookings(bookingData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(bookings);
 
   const handleDelete = async (tourId) => {
     // try {
@@ -47,7 +65,6 @@ const ManageBookings = () => {
   return (
     <div>
       <div className="table__div">
-        
         {modal && (
           <Modal isOpen={modal} toggle={handleModal} className="custom-modal">
             <ModalHeader toggle={handleModal} className="custom-modal-header">
@@ -75,7 +92,7 @@ const ManageBookings = () => {
                 placeholder="End Date"
               />
               <label class="booking-date" htmlFor="end-date">
-              Select Tour Guide:
+                Select Tour Guide:
               </label>
               <select value="Thisara Kavinda" className="custom-select">
                 <option value="" selected disabled>
@@ -86,7 +103,7 @@ const ManageBookings = () => {
                 {/* Render options for tour guides */}
               </select>
               <label class="booking-date" htmlFor="end-date">
-              Select Driver:
+                Select Driver:
               </label>
               <select value="Thanushi Perera" className="custom-select">
                 <option value="" selected disabled>
@@ -118,7 +135,9 @@ const ManageBookings = () => {
         )}
         <section>
           <div>
-            <h2 className="d-flex justify-content-center Bookingheader">Manage Bookings</h2>
+            <h2 className="d-flex justify-content-center Bookingheader">
+              Manage Bookings
+            </h2>
           </div>
           <Table className="custom-table">
             <thead>
@@ -131,48 +150,24 @@ const ManageBookings = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Dutch fort</td>
-                <td>Shehan Liyanage</td>
-                <td>8</td>
-                <td>541254587</td>
-                <td>
-                  <button
-                    className="edit-button"
-                    onClick={() => handleModal(1)}
-                  >
-                    View Booking
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Nine arches bridge</td>
-                <td>Lalith padikorala</td>
-                <td>8</td>
-                <td>771234567</td>
-                <td>
-                  <button
-                    className="edit-button"
-                    onClick={() => handleModal(2)}
-                  >
-                    View Booking
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Yala National Park</td>
-                <td>Viraj Chinthaka</td>
-                <td>8</td>
-                <td>771234567</td>
-                <td>
-                  <button
-                    className="edit-button"
-                    onClick={() => handleModal(3)}
-                  >
-                    View Booking
-                  </button>
-                </td>
-              </tr>
+              {bookings
+                .filter((book) => book.HotelName === user.hotelname)
+                .map((book) => (
+                  <tr key={book.id}>
+                    <td>{book.tourName}</td>
+                    <td>{book.fullName}</td>
+                    <td>{book.guestSize}</td>
+                    <td>{book.phone}</td>
+                    <td>
+                      <button
+                        className="edit-button"
+                        onClick={() => handleModal(1)}
+                      >
+                        View Booking
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
         </section>

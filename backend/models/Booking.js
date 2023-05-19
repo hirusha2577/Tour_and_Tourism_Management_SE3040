@@ -4,7 +4,6 @@ const bookingSchema = new mongoose.Schema(
   {
     tourId: {
       type: String,
-      required: true,
     },
     tourName: {
       type: String,
@@ -13,6 +12,9 @@ const bookingSchema = new mongoose.Schema(
     fullName: {
       type: String,
       required: true,
+    },
+    HotelName: {
+      type: String,
     },
     guestSize: {
       type: Number,

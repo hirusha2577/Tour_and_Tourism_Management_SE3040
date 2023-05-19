@@ -35,12 +35,7 @@ export const getBooking = async (req, res) => {
 export const getAllBooking = async (req, res) => {
   try {
     const book = await Booking.find({});
-
-    res.status(200).json({
-      success: true,
-      message: "Booking fetched successfully",
-      data: book,
-    });
+    res.send(book);
   } catch (err) {
     res.status(404).json({ success: false, message: "Not Found" });
   }

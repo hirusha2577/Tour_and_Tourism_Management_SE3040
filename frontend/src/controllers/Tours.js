@@ -14,13 +14,6 @@ export const getAllTour = async () => {
   return data;
 };
 
-// export const deleteTour = async (id) => {
-//   const { data } = await axios.delete(BASE_URL + "tours/", {
-//     id: id,
-//   });
-//   return data;
-// };
-
 export const deleteTour = async (tourId) => {
   console.log(tourId);
   const { data } = await axios.post(BASE_URL + "tours/delete/", {
