@@ -23,7 +23,7 @@ import useFetch from "../hooks/useFetch";
 import { BASE_URL } from "../utils/config";
 import { AuthContext } from "./../context/AuthContext.js";
 
-import { updatedReview } from "../controllers/Reviews";
+import { updatedReview, deleteReview } from "../controllers/Reviews";
 
 // CSS styles
 const buttonStyles = {
@@ -113,6 +113,42 @@ const TourDetails = () => {
   const handleModal = (review) => {
     setSelectedReview(review);
     setModal(!modal);
+  };
+
+  const deleteReviewHandler = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value === true) {
+        deleteReview(id).then((res) => {
+          if (res) {
+            Swal.fire({
+              title: "Success!",
+              text: "Your file has been deleted",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+      }
+    });
   };
 
   const handleSave = async () => {
@@ -324,7 +360,12 @@ const TourDetails = () => {
                                 >
                                   Edit
                                 </Button>
-                                <Button style={buttonStyles.deleteButton}>
+                                <Button
+                                  style={buttonStyles.deleteButton}
+                                  onClick={() =>
+                                    deleteReviewHandler(review._id)
+                                  }
+                                >
                                   Delete
                                 </Button>
                               </div>

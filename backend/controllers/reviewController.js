@@ -54,3 +54,9 @@ export const updatedReview = async (req, res) => {
     console.log(error.message);
   }
 };
+export const deleteReview = async (req, res) => {
+  console.log(req.body);
+  const review = await Review.findOneAndDelete({ _id: req.body.id });
+  console.log(review);
+  res.send(review);
+};

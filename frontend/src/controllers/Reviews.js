@@ -8,3 +8,11 @@ export const updatedReview = async (details) => {
   const { data } = await axios.post(BASE_URL + "review/update/", details);
   return data;
 };
+
+export const deleteReview = async (id) => {
+  console.log(id);
+  const { data } = await axios.post(BASE_URL + "review/delete/", {
+    id: id,
+  });
+  return data;
+};
