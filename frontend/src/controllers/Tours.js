@@ -10,20 +10,27 @@ export const createTour = async (details) => {
 };
 
 export const getAllTour = async () => {
-  const { data } = await axios.get(BASE_URL + "tours/");
+  const { data } = await axios.get(BASE_URL + "tours/hotel");
   return data;
 };
 
-export const deleteTour = async (id) => {
-  const { data } = await axios.delete(BASE_URL + "tours/", {
-    id: id,
+// export const deleteTour = async (id) => {
+//   const { data } = await axios.delete(BASE_URL + "tours/", {
+//     id: id,
+//   });
+//   return data;
+// };
+
+export const deleteTour = async (tourId) => {
+  console.log(tourId);
+  const { data } = await axios.post(BASE_URL + "tours/delete/", {
+    id: tourId,
   });
   return data;
 };
 
-export const updatedTour = async (id) => {
-  const { data } = await axios.put(BASE_URL + "tours/", {
-    id: id,
-  });
+export const updatedTour = async (details) => {
+  console.log(details);
+  const { data } = await axios.post(BASE_URL + "tours/update/", details);
   return data;
 };

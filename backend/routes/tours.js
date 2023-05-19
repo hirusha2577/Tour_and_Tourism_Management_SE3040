@@ -8,20 +8,23 @@ import {
   getTourBySearch,
   getFeaturedTour,
   getTourCounts,
+  getAllTourHotel,
 } from "../controllers/tourController.js";
 
 import { verifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
+router.get("/hotel", getAllTourHotel);
+
 //create new tour
 router.post("/", createTour);
 
 //update tour
-router.put("/:id", updatedTour);
+router.post("/update", updatedTour);
 
 //Delete tour
-router.delete("/:id", verifyHotel, deleteTour);
+router.post("/delete", deleteTour);
 
 //get sigle tour
 router.get("/:id", getSingleTour);

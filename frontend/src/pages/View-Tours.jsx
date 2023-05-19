@@ -8,12 +8,14 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
+import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
+import { reactBaseURL } from "../utils/config";
 
 import "../styles/view-tours.css";
 import "../styles/home.css";
 
-import { getAllTour } from "../controllers/Tours";
+import { getAllTour, updatedTour, deleteTour } from "../controllers/Tours";
 
 const ViewTours = () => {
   const { user } = useContext(AuthContext);
@@ -24,27 +26,53 @@ const ViewTours = () => {
   const [editedTour, setEditedTour] = useState({});
 
   useEffect(() => {
-    const fetchTours = async () => {
-      try {
-        const tourData = await getAllTour();
-        setTours(tourData.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchTours();
   }, []);
 
+  const fetchTours = async () => {
+    try {
+      const tourData = await getAllTour();
+      setTours(tourData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDelete = async (tourId) => {
-    // try {
-    //   // Make a DELETE request to remove the tour from the backend
-    //   await axios.delete(`your_backend_api_endpoint/${tourId}`);
-    //   // Fetch the updated tours list
-    //   fetchTours();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    console.log(tourId);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value === true) {
+        deleteTour(tourId).then((res) => {
+          if (res) {
+            Swal.fire({
+              title: "Success!",
+              text: "Your file has been deleted",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+      }
+    });
   };
 
   const handleEdit = (tour) => {
@@ -65,18 +93,52 @@ const ViewTours = () => {
     }));
   };
 
-  const handleSave = () => {
-    // Save the updated tour data
-    // Send a request to update the tour data in the backend using axios or fetch
-    // ...
-
-    toggleModal();
+  const handleSave = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to change Employee details!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then((res) => {
+      if (res.value === true) {
+        updatedTour({
+          _id: editedTour._id,
+          title: editedTour.title,
+          city: editedTour.city,
+          address: editedTour.address,
+          distance: editedTour.distance,
+          price: editedTour.price,
+          maxGroupSize: editedTour.maxGroupSize,
+        }).then((res) => {
+          if (res) {
+            Swal.fire({
+              icon: "success",
+              title: "Updated!",
+              text: "User details updated successfully!",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong!",
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          }
+        });
+      }
+    });
+    setTimeout(() => {
+      window.location.replace(reactBaseURL + "/view-tours");
+    }, 2050);
   };
 
   const handleCancel = () => {
     toggleModal();
   };
-
   return (
     <div>
       <h2 className="m-5">View Tours </h2>
@@ -113,7 +175,7 @@ const ViewTours = () => {
                     </Button>
                     <Button
                       className="delete__button"
-                      onClick={() => handleDelete(tour.id)}
+                      onClick={() => handleDelete(tour._id)}
                     >
                       Delete
                     </Button>
@@ -159,7 +221,7 @@ const ViewTours = () => {
           <div>
             <label htmlFor="edit-distance">Distance:</label>
             <input
-              type="text"
+              type="number"
               id="edit-distance"
               name="distance"
               value={editedTour.distance || ""}
@@ -169,7 +231,7 @@ const ViewTours = () => {
           <div>
             <label htmlFor="edit-price">Price:</label>
             <input
-              type="text"
+              type="number"
               id="edit-price"
               name="price"
               value={editedTour.price || ""}
@@ -179,7 +241,7 @@ const ViewTours = () => {
           <div>
             <label htmlFor="edit-maxGroupSize">Max Group Size:</label>
             <input
-              type="text"
+              type="number"
               id="edit-maxGroupSize"
               name="maxGroupSize"
               value={editedTour.maxGroupSize || ""}

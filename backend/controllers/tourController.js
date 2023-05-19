@@ -19,46 +19,91 @@ export const createTour = async (req, res) => {
   });
 };
 
-export const updatedTour = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const updateTour = await Tour.findByIdAndUpdate(
-      id,
-      {
-        $set: req.body,
-      },
-      { new: true }
-    );
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated tour",
-      data: updateTour,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to update tour",
-    });
-  }
-};
-export const deleteTour = async (req, res) => {
-  const id = req.params.id;
-  try {
-    if (id) {
-      await Tour.findByIdAndDelete(id);
+// export const updatedTour = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const updateTour = await Tour.findByIdAndUpdate(
+//       id,
+//       {
+//         $set: req.body,
+//       },
+//       { new: true }
+//     );
+//     res.status(200).json({
+//       success: true,
+//       message: "Successfully updated tour",
+//       data: updateTour,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Unable to update tour",
+//     });
+//   }
+// };
 
-      res.status(200).json({
-        success: true,
-        message: "Successfully Deleted tour",
+export const updatedTour = async (req, res) => {
+  try {
+    const tour = await Tour.findOneAndUpdate(
+      {
+        _id: req.body._id,
+      },
+      {
+        _id: req.body.id,
+        title: req.body.title,
+        city: req.body.city,
+        address: req.body.address,
+        desc: req.body.desc,
+        distance: req.body.distance,
+        price: req.body.price,
+        maxGroupSize: req.body.maxGroupSize,
+        HotelName: req.body.HotelName,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (user) {
+      res.send({
+        status: 200,
+        user: user,
+      });
+    } else {
+      res.send({
+        status: 500,
+        user: user,
       });
     }
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to delete tour",
-    });
+  } catch (error) {
+    console.log(error.message);
   }
 };
+
+// export const deleteTour = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     if (id) {
+//       await Tour.findByIdAndDelete(id);
+
+//       res.status(200).json({
+//         success: true,
+//         message: "Successfully Deleted tour",
+//       });
+//     }
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Unable to delete tour",
+//     });
+//   }
+// };
+
+export const deleteTour = async (req, res) => {
+  const tour = await Tour.findOneAndDelete({ _id: req.body.id });
+  res.send(tour);
+};
+
 export const getSingleTour = async (req, res) => {
   const id = req.params.id;
   try {
@@ -96,6 +141,11 @@ export const getAllTour = async (req, res) => {
       message: "Unable to find tours",
     });
   }
+};
+
+export const getAllTourHotel = async (req, res) => {
+  const tour = await Tour.find({});
+  res.send(tour);
 };
 
 export const getTourBySearch = async (req, res) => {
