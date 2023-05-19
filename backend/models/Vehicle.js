@@ -23,6 +23,10 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  driverName: {
+    type: String,
+    required: true,
+  },
 });
 
 export default mongoose.model("Vehicle", vehicleSchema);

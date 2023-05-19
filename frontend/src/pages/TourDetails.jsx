@@ -1,7 +1,19 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
 import "../styles/tour-details.css";
-import { Container, Row, Col, Form, ListGroup, Button , Modal , ModalHeader , ModalBody ,ModalFooter } from "reactstrap";
+import Swal from "sweetalert2";
+import { reactBaseURL } from "../utils/config";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  ListGroup,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { useParams } from "react-router-dom";
 import calculateAvgRating from "../utils/avgRating";
 import avatar from "../assets/images/avatar.jpg";
@@ -10,6 +22,8 @@ import Newsletter from "../shared/Newsletter";
 import useFetch from "../hooks/useFetch";
 import { BASE_URL } from "../utils/config";
 import { AuthContext } from "./../context/AuthContext.js";
+
+import { updatedReview } from "../controllers/Reviews";
 
 // CSS styles
 const buttonStyles = {
@@ -32,9 +46,9 @@ const TourDetails = () => {
   const { id } = useParams();
   const reviewMsgRef = useRef("");
   const [tourRating, setTourRating] = useState(null);
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
   const [modal, setModal] = useState(false);
-
+  const [selectedReview, setSelectedReview] = useState(null);
 
   const { data: tour, loading, error } = useFetch(`${BASE_URL}tours/${id}`);
 
@@ -52,12 +66,8 @@ const TourDetails = () => {
 
   const totalRating = 0;
   const avgRating = 0;
-  // const { totalRating, avgRating } = calculateAvgRating(reviews);
-  // format date
 
   const options = { day: "numeric", month: "long", year: "numeric" };
-
-  //submit requst to the server
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -95,55 +105,104 @@ const TourDetails = () => {
       alert(err.message);
     }
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  
-  const handleModal = () => {
+  const handleModal = (review) => {
+    setSelectedReview(review);
     setModal(!modal);
   };
-  
-  const handleSave = () => {
-    // Handle the save functionality
+
+  const handleSave = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to change Review details!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then((res) => {
+      if (res.value === true) {
+        updatedReview({
+          _id: selectedReview._id,
+          reviewText: selectedReview.reviewText,
+          rating: selectedReview.rating,
+        }).then((res) => {
+          if (res) {
+            Swal.fire({
+              icon: "success",
+              title: "Updated!",
+              text: "Reviews details updated successfully!",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong!",
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          }
+        });
+      }
+    });
+    setTimeout(() => {
+      window.location.replace(reactBaseURL + "/tours");
+    }, 2050);
   };
 
   return (
     <div>
       <div>
-      {modal && (
+        {modal && selectedReview && (
           <Modal isOpen={modal} toggle={handleModal} className="custom-modal">
             <ModalHeader toggle={handleModal} className="custom-modal-header">
-                Review Update
+              Review Update
             </ModalHeader>
             <ModalBody className="custom-modal-body">
-              <label class="booking-date" htmlFor="end-date">
-              Reviver:
-              </label>
-              <p>Shehan Liyanage</p>
-              <label class="booking-date" htmlFor="end-date">
-             Review:
-              </label>
-              <input type="text" value="waaaaw" />            
-              <label class="booking-date" htmlFor="end-date">
-              Rating Stars:
-              </label>
-              <input type="text" value="5" max={5} />            
-
-              
+              <label htmlFor="reviewer">Reviewer:</label>
+              <p>{selectedReview.username}</p>
+              <label htmlFor="reviewText">Review:</label>
+              <textarea
+                value={selectedReview.reviewText}
+                onChange={(e) =>
+                  setSelectedReview({
+                    ...selectedReview,
+                    reviewText: e.target.value,
+                  })
+                }
+                className="form-control custom-textarea"
+                rows="5"
+              />
+              <label htmlFor="rating">Rating Stars:</label>
+              <input
+                type="number"
+                value={selectedReview.rating}
+                max={5}
+                onChange={(e) =>
+                  setSelectedReview({
+                    ...selectedReview,
+                    rating: e.target.value,
+                  })
+                }
+                className="form-control custom-input"
+              />
             </ModalBody>
             <ModalFooter className="custom-modal-footer">
               <Button
                 color="primary"
                 onClick={handleSave}
-                className="custom-button-primary"
+                className="custom-button custom-button-primary"
               >
                 Save
               </Button>
               <Button
                 color="secondary"
                 onClick={handleModal}
-                className="custom-button-secondary"
+                className="custom-button custom-button-secondary"
               >
                 Cancel
               </Button>
@@ -166,7 +225,7 @@ const TourDetails = () => {
                       <div className="d-flex align-items-center gap-5">
                         <span className="tour__rating d-flex align-items-center gap-1">
                           <i
-                            class="ri-star-fill"
+                            className="ri-star-fill"
                             style={{ color: "var(--secondary-color)" }}
                           ></i>
                           {avgRating === 0 ? null : avgRating}
@@ -177,7 +236,7 @@ const TourDetails = () => {
                           )}
                         </span>
                         <span>
-                          <i class="ri-map-pin-user-line"></i> {address}
+                          <i className="ri-map-pin-user-line"></i> {address}
                         </span>
                       </div>
 
@@ -205,23 +264,23 @@ const TourDetails = () => {
 
                     {/* ============ Tour Review Section  ==========*/}
                     <div className="tour__reviews mt-4">
-                      <h4>Reviews ({reviews?.length}reviews)</h4>
+                      <h4>Reviews ({reviews?.length} reviews)</h4>
                       <Form onSubmit={submitHandler}>
                         <div className="d-flex align-items-center gap-3 mb-4 rating__group">
                           <span onClick={() => setTourRating(1)}>
-                            1<i class="ri-star-s-fill"></i>
+                            1<i className="ri-star-s-fill"></i>
                           </span>
                           <span onClick={() => setTourRating(2)}>
-                            2<i class="ri-star-s-fill"></i>
+                            2<i className="ri-star-s-fill"></i>
                           </span>
                           <span onClick={() => setTourRating(3)}>
-                            3<i class="ri-star-s-fill"></i>
+                            3<i className="ri-star-s-fill"></i>
                           </span>
                           <span onClick={() => setTourRating(4)}>
-                            4<i class="ri-star-s-fill"></i>
+                            4<i className="ri-star-s-fill"></i>
                           </span>
                           <span onClick={() => setTourRating(5)}>
-                            5<i class="ri-star-s-fill"></i>
+                            5<i className="ri-star-s-fill"></i>
                           </span>
                         </div>
                         <div className="review__input">
@@ -240,8 +299,8 @@ const TourDetails = () => {
                         </div>
                       </Form>
                       <ListGroup className="user__reviews">
-                        {reviews?.map((review) => (
-                          <div className="review__item">
+                        {reviews?.map((review, index) => (
+                          <div className="review__item" key={index}>
                             <img src={avatar} alt="" />
 
                             <div className="w-100">
@@ -261,7 +320,7 @@ const TourDetails = () => {
                                 <Button
                                   className="mr-2"
                                   style={buttonStyles.editButton}
-                                  onClick={handleModal}
+                                  onClick={() => handleModal(review)}
                                 >
                                   Edit
                                 </Button>
@@ -290,4 +349,5 @@ const TourDetails = () => {
     </div>
   );
 };
+
 export default TourDetails;

@@ -18,9 +18,7 @@ const ManageBookings = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [modal, setModal] = useState(false);
-  // const [selectedTour, setSelectedTour] = useState(null);
-  // const [selectedGuide, setSelectedGuide] = useState(null);
-  // const [selectedDriver, setSelectedDriver] = useState(null);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     fetchBookings();
@@ -34,7 +32,6 @@ const ManageBookings = () => {
       console.log(error);
     }
   };
-  console.log(bookings);
 
   const handleDelete = async (tourId) => {
     // try {
@@ -46,17 +43,11 @@ const ManageBookings = () => {
     //   console.log(error);
     // }
   };
-  const handleModal = () => {
+
+  const handleModal = (booking) => {
+    setSelectedBooking(booking);
     setModal(!modal);
   };
-
-  // const handleGuideSelect = (event) => {
-  //   setSelectedGuide(event.target.value);
-  // };
-
-  // const handleDriverSelect = (event) => {
-  //   setSelectedDriver(event.target.value);
-  // };
 
   const handleSave = () => {
     // Handle the save functionality
@@ -65,54 +56,29 @@ const ManageBookings = () => {
   return (
     <div>
       <div className="table__div">
-        {modal && (
+        {modal && selectedBooking && (
           <Modal isOpen={modal} toggle={handleModal} className="custom-modal">
             <ModalHeader toggle={handleModal} className="custom-modal-header">
               Booking Details
             </ModalHeader>
             <ModalBody className="custom-modal-body">
-              <p>Tour:Dutch fort</p>
-              <p>Booked by: Shehan Liyanage</p>
-              <label class="booking-date" htmlFor="start-date">
-                Start Date
-              </label>
-              <input
-                class="custom-input"
-                type="date"
-                id="start-date"
-                placeholder="Start Date"
-              />
-              <label class="booking-date" htmlFor="end-date">
-                End Date
-              </label>
-              <input
-                class="custom-input"
-                type="date"
-                id="end-date"
-                placeholder="End Date"
-              />
-              <label class="booking-date" htmlFor="end-date">
-                Select Tour Guide:
-              </label>
-              <select value="Thisara Kavinda" className="custom-select">
-                <option value="" selected disabled>
+              <p>Tour: {selectedBooking.tourName}</p>
+              <p>Booked by: {selectedBooking.fullName}</p>
+              <label htmlFor="select-guide">Select Tour Guide:</label>
+              <select id="select-guide" className="custom-select">
+                <option value="" disabled>
                   Select Guide
                 </option>
-                <option value="thisara">Thisara Kavinda</option>
-                <option value="">Thisara Kavinda</option>
-                {/* Render options for tour guides */}
+                <option value="Thisara Kavinda">Thisara Kavinda</option>
+                <option value="John Doe">John Doe</option>
               </select>
-              <label class="booking-date" htmlFor="end-date">
-                Select Driver:
-              </label>
-              <select value="Thanushi Perera" className="custom-select">
-                <option value="" selected disabled>
+              <label htmlFor="select-driver">Select Driver:</label>
+              <select id="select-driver" className="custom-select">
+                <option value="" disabled>
                   Select Driver
                 </option>
-                <option value="">Thanushi Perera</option>
-                <option value="">Thanushi Perera</option>
-
-                {/* Render options for drivers */}
+                <option value="Thanushi Perera">Thanushi Perera</option>
+                <option value="Jane Smith">Jane Smith</option>
               </select>
             </ModalBody>
             <ModalFooter className="custom-modal-footer">
@@ -161,7 +127,7 @@ const ManageBookings = () => {
                     <td>
                       <button
                         className="edit-button"
-                        onClick={() => handleModal(1)}
+                        onClick={() => handleModal(book)}
                       >
                         View Booking
                       </button>
@@ -173,7 +139,7 @@ const ManageBookings = () => {
         </section>
       </div>
       <section>
-        <div className=" Hotel__links d-flex align-items-center gap-5">
+        <div className="Hotel__links d-flex align-items-center gap-5">
           <Link to="/add-tour">
             <div className="hotel__main">Add Tour</div>
           </Link>

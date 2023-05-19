@@ -19,6 +19,7 @@ export const createUser = async (req, res) => {
 };
 
 export const updatedUser = async (req, res) => {
+  console.log(req.body);
   try {
     const user = await User.findOneAndUpdate(
       {

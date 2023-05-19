@@ -4,7 +4,7 @@ import {
   updateVehicle,
   deleteVehicle,
   getSingleVehicle,
-} from "../controllers/vehicleCOntroller.js";
+} from "../controllers/vehicleController.js";
 const router = express.Router();
 
 import { verifyVehicleDriver } from "../utils/verifyToken.js";
