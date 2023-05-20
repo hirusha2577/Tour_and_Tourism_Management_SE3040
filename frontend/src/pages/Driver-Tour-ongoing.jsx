@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Table,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "reactstrap";
+import { Table, Button } from "reactstrap";
 import "../styles/manage-driver.css";
 import "../styles/home.css";
 
@@ -15,7 +8,6 @@ import { getAllOngoingBookings } from "../controllers/Booking.js";
 
 const DriverTouronGiing = () => {
   const [tours, setTours] = useState([]);
-  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     fetchBooking();
@@ -32,69 +24,9 @@ const DriverTouronGiing = () => {
 
   console.log(tours);
 
-  const handleDelete = async (tourId) => {
-    // try {
-    //   // Make a DELETE request to remove the tour from the backend
-    //   await axios.delete(`your_backend_api_endpoint/${tourId}`);
-    //   // Fetch the updated tours list
-    //   fetchTours();
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-
-  const handleModal = () => {
-    setModal(!modal);
-  };
-
-  const handleSave = () => {
-    // Handle the save functionality
-  };
-
   return (
     <div>
       <div>
-        {modal && (
-          <Modal isOpen={modal} toggle={handleModal} className="custom-modal">
-            <ModalHeader toggle={handleModal} className="custom-modal-header">
-              Vehicle Details
-            </ModalHeader>
-            <ModalBody className="custom-modal-body">
-              <label class="booking-date" htmlFor="end-date">
-                Vehicle Type:
-              </label>
-              <input type="text" value="Van" />
-              <label class="booking-date" htmlFor="end-date">
-                Vehicle Number:
-              </label>
-              <input type="text" value="NA-8563" />
-              <label class="booking-date" htmlFor="end-date">
-                Vehicle Driver:
-              </label>
-              <p>Shehan Liyanage</p>
-              <label class="booking-date" htmlFor="end-date">
-                Vehicle Capacity:
-              </label>
-              <input type="text" value="10" />
-            </ModalBody>
-            <ModalFooter className="custom-modal-footer">
-              <Button
-                color="primary"
-                onClick={handleSave}
-                className="custom-button-primary"
-              >
-                Save
-              </Button>
-              <Button
-                color="secondary"
-                onClick={handleModal}
-                className="custom-button-secondary"
-              >
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        )}
         <h2 className="ml-5">Driver Appointment </h2>
         <section>
           <div className=" guide__links d-flex ">
@@ -140,14 +72,6 @@ const DriverTouronGiing = () => {
       </div>
       <section>
         <div className=" Hotel__links d-flex align-items-center gap-5">
-          <Link to="/add-vehicle">
-            <div className="hotel__main">Add Vehicle</div>
-          </Link>
-          <Link>
-            <div className="hotel__main" onClick={handleModal}>
-              View Vehicle
-            </div>
-          </Link>
           <Link to="/driver-tour-manage">
             <div className="hotel__main">Appointments</div>
           </Link>

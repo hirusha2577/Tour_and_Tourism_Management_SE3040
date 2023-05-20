@@ -63,7 +63,7 @@ const HomeGiude = () => {
           <Link to="/guide-tour-manage">
             <div className="hotel__main">View Tours</div>
           </Link>
-          <Link to="/manage-bookings">
+          <Link to="/guide-tour-manage">
             <div className="hotel__main">View Bookings</div>
           </Link>
         </div>

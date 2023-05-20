@@ -17,32 +17,67 @@ export const createVehicle = async (req, res) => {
     });
   }
 };
-
 export const updateVehicle = async (req, res) => {
-  const id = req.params.id;
-  console.log(req.body);
-  console.log(id);
   try {
-    const updateVehicle = await Vehicle.findByIdAndUpdate(
-      id,
+    const vehicle = await Vehicle.findOneAndUpdate(
       {
-        $set: req.body,
+        _id: req.body._id,
       },
-      { new: true }
+      {
+        _id: req.body.id,
+        number: req.body.number,
+        type: req.body.type,
+        seatCapacity: req.body.seatCapacity,
+        identification: req.body.identification,
+        userID: req.body.userID,
+        driverName: req.body.driverName,
+      },
+      {
+        new: true,
+      }
     );
-    console.log(updateVehicle);
-    res.status(200).json({
-      success: true,
-      message: "Successfully updated Vehicle",
-      data: updateVehicle,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "unable to update Vehicle",
-    });
+
+    if (user) {
+      res.send({
+        status: 200,
+        user: user,
+      });
+    } else {
+      res.send({
+        status: 500,
+        user: user,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
+
+// export const updateVehicle = async (req, res) => {
+//   const id = req.params.id;
+//   console.log(req.body);
+//   console.log(id);
+//   try {
+//     const updateVehicle = await Vehicle.findByIdAndUpdate(
+//       id,
+//       {
+//         $set: req.body,
+//       },
+//       { new: true }
+//     );
+//     console.log(updateVehicle);
+//     res.status(200).json({
+//       success: true,
+//       message: "Successfully updated Vehicle",
+//       data: updateVehicle,
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "unable to update Vehicle",
+//     });
+//   }
+// };
 
 export const deleteVehicle = async (req, res) => {
   const id = req.params.id;
@@ -81,6 +116,6 @@ export const deleteVehicle = async (req, res) => {
 // };
 
 export const getSingleVehicle = async (req, res) => {
-  const vehicle = await Vehicle.findOne({ _id: req.body.id });
+  const vehicle = await Vehicle.findOne({ userID: req.body.id });
   res.send(vehicle);
 };

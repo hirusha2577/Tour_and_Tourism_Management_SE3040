@@ -13,7 +13,7 @@ import "../styles/home.css";
 
 import { getAllpendingBookings } from "../controllers/Booking.js";
 
-const GiudeTourView = () => {
+const GiudeTourOngoing = () => {
   const [tours, setTours] = useState([]);
   const [modal, setModal] = useState(false);
 
@@ -99,10 +99,10 @@ const GiudeTourView = () => {
         <section>
           <div className=" guide__links d-flex ">
             <Link to="/guide-tour-manage">
-              <div className="guide__pending">Pending</div>
+              <div className="guide__onGoing">Pending</div>
             </Link>
             <Link to="/guide-tour-ongoing">
-              <div className="guide__onGoing">On Going</div>
+              <div className="guide__pending">On Going</div>
             </Link>
             <Link to="/guide-tour-complete">
               <div className="guide__completed">Completed</div>
@@ -145,4 +145,4 @@ const GiudeTourView = () => {
   );
 };
 
-export default GiudeTourView;
+export default GiudeTourOngoing;

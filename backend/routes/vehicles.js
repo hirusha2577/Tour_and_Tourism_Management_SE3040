@@ -14,6 +14,6 @@ router.post("/create", createVehicle);
 
 router.delete("/:id", deleteVehicle);
 
-router.put("/:id", updateVehicle);
+router.post("/update", updateVehicle);
 
 export default router;

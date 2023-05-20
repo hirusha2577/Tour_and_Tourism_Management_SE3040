@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Table,
@@ -11,11 +11,20 @@ import {
 import "../styles/manage-driver.css";
 import "../styles/home.css";
 
+import { AuthContext } from "../context/AuthContext";
+
 import { getAllpendingBookings } from "../controllers/Booking.js";
+import { getSingleVehicle, updateVehicle } from "../controllers/Vehicle.js";
 
 const DriverTourView = () => {
+  const { user } = useContext(AuthContext);
+
   const [tours, setTours] = useState([]);
+  const [vehicle, setVehicle] = useState({});
+  const [newVehicle, setNewVehicle] = useState({});
   const [modal, setModal] = useState(false);
+
+  console.log(newVehicle);
 
   useEffect(() => {
     fetchBooking();
@@ -30,25 +39,34 @@ const DriverTourView = () => {
     }
   };
 
-  console.log(tours);
+  useEffect(() => {
+    fetchVehicle();
+  }, []);
 
-  const handleDelete = async (tourId) => {
-    // try {
-    //   // Make a DELETE request to remove the tour from the backend
-    //   await axios.delete(`your_backend_api_endpoint/${tourId}`);
-    //   // Fetch the updated tours list
-    //   fetchTours();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const fetchVehicle = async () => {
+    try {
+      const vehicleData = await getSingleVehicle(user._id);
+      setVehicle(vehicleData);
+      setNewVehicle(vehicleData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleModal = () => {
     setModal(!modal);
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewVehicle((prevVehicle) => ({
+      ...prevVehicle,
+      [name]: value,
+    }));
+  };
+
   const handleSave = () => {
-    // Handle the save functionality
+    console.log(newVehicle);
   };
 
   return (
@@ -60,22 +78,37 @@ const DriverTourView = () => {
               Vehicle Details
             </ModalHeader>
             <ModalBody className="custom-modal-body">
-              <label class="booking-date" htmlFor="end-date">
+              <label className="booking-date" htmlFor="identification">
                 Vehicle Type:
               </label>
-              <input type="text" value="Van" />
-              <label class="booking-date" htmlFor="end-date">
+              <input
+                type="text"
+                name="identification"
+                value={newVehicle.identification || ""}
+                onChange={handleInputChange}
+              />
+              <label className="booking-date" htmlFor="number">
                 Vehicle Number:
               </label>
-              <input type="text" value="NA-8563" />
-              <label class="booking-date" htmlFor="end-date">
-                Vehicle Driver:
+              <input
+                type="text"
+                name="number"
+                value={newVehicle.number || ""}
+                onChange={handleInputChange}
+              />
+              <label className="booking-date" htmlFor="number">
+                Driver Name:
               </label>
-              <p>Shehan Liyanage</p>
-              <label class="booking-date" htmlFor="end-date">
+              <p>{newVehicle.driverName}</p>
+              <label className="booking-date" htmlFor="seatCapacity">
                 Vehicle Capacity:
               </label>
-              <input type="text" value="10" />
+              <input
+                type="text"
+                name="seatCapacity"
+                value={newVehicle.seatCapacity || ""}
+                onChange={handleInputChange}
+              />
             </ModalBody>
             <ModalFooter className="custom-modal-footer">
               <Button
