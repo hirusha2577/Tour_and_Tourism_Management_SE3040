@@ -41,7 +41,7 @@ jobs:
         docker login -u $USER -p $PASSWORD
     - name: Build frontend docker image
       run: |
-        cd src/auth_service
+        cd frontend
         docker build . --file Dockerfile --tag $USER/$FRONTEND
     - name: Push auth service docker image
       run: docker push $USER/$FRONTEND
