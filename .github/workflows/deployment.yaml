@@ -46,7 +46,6 @@ jobs:
     - name: Push auth service docker image
       run: docker push $USER/$FRONTEND
 
-  
   deploy:
     needs: [backend, frontend]
     runs-on: ubuntu-latest
