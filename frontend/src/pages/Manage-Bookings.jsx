@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import moment from "moment";
 import { Link } from "react-router-dom";
 import {
   Modal,
@@ -112,6 +113,7 @@ const ManageBookings = () => {
                 <th>Full Name</th>
                 <th>Guest Size</th>
                 <th>Phone</th>
+                <th>Booking Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -124,6 +126,7 @@ const ManageBookings = () => {
                     <td>{book.fullName}</td>
                     <td>{book.guestSize}</td>
                     <td>{book.phone}</td>
+                    <td>{new Date(book.bookAt).toLocaleDateString()}</td>
                     <td>
                       <button
                         className="edit-button"

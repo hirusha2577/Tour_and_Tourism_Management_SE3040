@@ -63,19 +63,24 @@ export const deleteVehicle = async (req, res) => {
   }
 };
 
+// export const getSingleVehicle = async (req, res) => {
+//   const id = req.params.userID;
+//   try {
+//     const vehicle = await Vehicle.findOne(id);
+//     res.status(200).json({
+//       success: true,
+//       message: "Successfully get Vehicle",
+//       data: vehicle,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Unable to find Vehicle",
+//     });
+//   }
+// };
+
 export const getSingleVehicle = async (req, res) => {
-  const id = req.params.userID;
-  try {
-    const vehicle = await Vehicle.findOne(id);
-    res.status(200).json({
-      success: true,
-      message: "Successfully get Vehicle",
-      data: vehicle,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to find Vehicle",
-    });
-  }
+  const vehicle = await Vehicle.findOne({ _id: req.body.id });
+  res.send(vehicle);
 };

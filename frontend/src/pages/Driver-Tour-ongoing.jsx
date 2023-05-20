@@ -11,9 +11,9 @@ import {
 import "../styles/manage-driver.css";
 import "../styles/home.css";
 
-import { getAllpendingBookings } from "../controllers/Booking.js";
+import { getAllOngoingBookings } from "../controllers/Booking.js";
 
-const DriverTourView = () => {
+const DriverTouronGiing = () => {
   const [tours, setTours] = useState([]);
   const [modal, setModal] = useState(false);
 
@@ -23,7 +23,7 @@ const DriverTourView = () => {
 
   const fetchBooking = async () => {
     try {
-      const bookingData = await getAllpendingBookings();
+      const bookingData = await getAllOngoingBookings();
       setTours(bookingData);
     } catch (error) {
       console.log(error);
@@ -99,10 +99,10 @@ const DriverTourView = () => {
         <section>
           <div className=" guide__links d-flex ">
             <Link to="/driver-tour-manage">
-              <div className="guide__pending">Pending</div>
+              <div className="guide__onGoing">Pending</div>
             </Link>
             <Link to="/driver-tour-ongoing">
-              <div className="guide__onGoing">On Going</div>
+              <div className="guide__pending">On Going</div>
             </Link>
             <Link to="/driver-tour-complete">
               <div className="guide__completed">Completed</div>
@@ -130,7 +130,7 @@ const DriverTourView = () => {
                   <td>{tour.phone}</td>
                   <td>{tour.vehicleId}</td>
                   <td>
-                    <Button className="custom-button-primary">confirm</Button>
+                    <Button className="custom-button-primary">Complete</Button>
                   </td>
                 </tr>
               ))}
@@ -157,4 +157,4 @@ const DriverTourView = () => {
   );
 };
 
-export default DriverTourView;
+export default DriverTouronGiing;

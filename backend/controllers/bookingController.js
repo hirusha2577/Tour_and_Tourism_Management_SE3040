@@ -83,3 +83,16 @@ export const deleteBooking = async (req, res) => {
     });
   }
 };
+
+export const getAllpendingBookings = async (req, res) => {
+  const booking = await Booking.find({ status: "pending" });
+  res.send(booking);
+};
+export const getAllOngoingBookings = async (req, res) => {
+  const booking = await Booking.find({ status: "ongoing" });
+  res.send(booking);
+};
+export const getAllComletedBookings = async (req, res) => {
+  const booking = await Booking.find({ status: "completed" });
+  res.send(booking);
+};

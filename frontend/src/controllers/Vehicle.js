@@ -7,3 +7,5 @@ export const createVehicle = async (details) => {
     const { data } = await axios.post(BASE_URL + "vehicle/create/", details);
     return data;
 }
+
+export const getVehicles = async () => {};

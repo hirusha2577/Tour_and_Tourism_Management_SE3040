@@ -11,9 +11,9 @@ import {
 import "../styles/manage-driver.css";
 import "../styles/home.css";
 
-import { getAllpendingBookings } from "../controllers/Booking.js";
+import { getAllComletedBookings } from "../controllers/Booking.js";
 
-const DriverTourView = () => {
+const DriverTourComplete = () => {
   const [tours, setTours] = useState([]);
   const [modal, setModal] = useState(false);
 
@@ -23,7 +23,7 @@ const DriverTourView = () => {
 
   const fetchBooking = async () => {
     try {
-      const bookingData = await getAllpendingBookings();
+      const bookingData = await getAllComletedBookings();
       setTours(bookingData);
     } catch (error) {
       console.log(error);
@@ -118,7 +118,6 @@ const DriverTourView = () => {
                 <th>Guest Size</th>
                 <th>Number</th>
                 <th>Vehicle ID</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -129,9 +128,6 @@ const DriverTourView = () => {
                   <td>{tour.guestSize}</td>
                   <td>{tour.phone}</td>
                   <td>{tour.vehicleId}</td>
-                  <td>
-                    <Button className="custom-button-primary">confirm</Button>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -157,4 +153,4 @@ const DriverTourView = () => {
   );
 };
 
-export default DriverTourView;
+export default DriverTourComplete;

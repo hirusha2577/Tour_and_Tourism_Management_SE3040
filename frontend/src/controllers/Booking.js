@@ -12,3 +12,16 @@ export const getAllBooking = async () => {
   const { data } = await axios.get(BASE_URL + "booking/");
   return data;
 };
+
+export const getAllpendingBookings = async () => {
+  const { data } = await axios.get(BASE_URL + "booking/pending/");
+  return data;
+};
+export const getAllOngoingBookings = async () => {
+  const { data } = await axios.get(BASE_URL + "booking/ongoing/");
+  return data;
+};
+export const getAllComletedBookings = async () => {
+  const { data } = await axios.get(BASE_URL + "booking/completed/");
+  return data;
+};

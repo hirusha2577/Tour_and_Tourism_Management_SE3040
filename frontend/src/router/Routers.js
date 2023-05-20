@@ -18,6 +18,9 @@ import GiudeTourView from "../pages/Guide-Tour-Manage";
 import DriverTourView from "../pages/Driver-Tour-Manage";
 import ManageBookingsTourist from "../pages/Manage-Tourist-Booking";
 import UserProfile from "../pages/UserProfile";
+import DriverTouronGiing from "../pages/Driver-Tour-ongoing";
+import DriverTourComplete from "../pages/Driver-Tour-Complete";
+
 import { ThankYou } from "../pages/ThankYou";
 
 const Routers = () => {
@@ -39,6 +42,8 @@ const Routers = () => {
       <Route path="/guide-tour-manage" element={<GiudeTourView />} />
       <Route path="/manage-bookings" element={<ManageBookings />} />
       <Route path="/driver-tour-manage" element={<DriverTourView />} />
+      <Route path="/driver-tour-ongoing" element={<DriverTouronGiing />} />
+      <Route path="/driver-tour-complete" element={<DriverTourComplete />} />
       <Route
         path="/tourist-manage-booking"
         element={<ManageBookingsTourist />}
